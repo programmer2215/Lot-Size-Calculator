@@ -26,7 +26,8 @@ def find_lotsize(name, index, mode):
         balance = float(balance_var.get())
         risk = float(risk_per_var.get())
         sl = float(sl_price_var.get())
-        lotsize = (balance * (risk / 100)) / sl
+        ATR = float(ATR_val_var.get())
+        lotsize = (balance * (risk / 100)) / (sl * ATR)
         lot_size_var.set(f"Lot Size: {lotsize:.2f}")
         try:
             margin()
@@ -48,12 +49,19 @@ risk_per_var.trace_add("write", find_lotsize)
 risk_per_entry = ttk.Entry(main_frame, textvariable=risk_per_var)
 risk_per_entry.grid(row=1, column=1, padx=20, pady=5)
 
-Sl_price_lab = tk.Label(main_frame, text="SL Price", font=FONT).grid(row=2, column=0, columnspan=2, padx=40, pady=5)
+Sl_price_lab = tk.Label(main_frame, text="SL Price", font=FONT).grid(row=2, column=0, padx=40, pady=5)
 
 sl_price_var = tk.StringVar()
 sl_price_var.trace_add("write", find_lotsize)
 sl_price_entry = ttk.Entry(main_frame, textvariable=sl_price_var)
-sl_price_entry.grid(row=3, column=0, columnspan=2, padx=20, pady=5)
+sl_price_entry.grid(row=3, column=0, padx=20, pady=5)
+
+ATR_val_lab = tk.Label(main_frame, text="ATR", font=FONT).grid(row=2, column=1, padx=40, pady=5)
+
+ATR_val_var = tk.StringVar(value=1)
+ATR_val_var.trace_add("write", find_lotsize)
+ATR_val_entry = ttk.Entry(main_frame, textvariable=ATR_val_var)
+ATR_val_entry.grid(row=3, column=1, padx=20, pady=5)
 
 lot_size_var = tk.StringVar(value="Lot Size:")
 lot_size_lab = tk.Label(main_frame, textvariable=lot_size_var, font=('Helvetica', 25)).grid(row=4, column=0, columnspan=2, padx=40, pady=5)
